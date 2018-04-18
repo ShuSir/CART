@@ -15,7 +15,7 @@ def get_possible_splits( df , attribute ):
         splits: list of all possible splits 
     """
     ds = df.loc[:,attribute]
-
+    
     # First sort the values 
     ds = ds.sort_values().drop_duplicates()
     
@@ -24,10 +24,9 @@ def get_possible_splits( df , attribute ):
     splits = ds[1:].tolist()
     
     # return the possible splits 
-    print splits
+    return splits
 
-
-def evaluate_gini_value ( df, attribute, split ):
+def evaluate_split( df, attribute, split ):
     """
     helper function to evaluate gini value for the split
 
@@ -42,7 +41,31 @@ def evaluate_gini_value ( df, attribute, split ):
     Returns:
         gini_value : the gini index for split 
     """
+    mask = df[attribute] <= split
+    split
+    
+    # split the dataset on the split attribute
+    dfl = df[mask]
+    dfr = df[~mask]
+   
+    # calculate weighting factors for child
+    weighting_factor_left = float(dfl.shape[0])/df.shape[0]
+    weighting_factor_right = float(dfr.shape[0])/df.shape[0]
 
+    # calculate gini for left and right
+    gini_left = gini_impurity(dfl)
+    gini_right = gini_impurity(dfr)
+    
+    # calculate weighted gini for this split 
+    weighted_gini = weighting_factor_left*gini_left + weighting_factor_right*gini_right
+    print weighted_gini
 
+def gini_impurity( df ):
+    
+    # compute positive samples and negative samples
+    positive = float(len(df[df['defects'] == 1]))/df.shape[0]
+    negative = 1.0 - positive
+    
+    gini_idx = (positive*positive) + (negative*negative)
 
-
+    return gini_idx

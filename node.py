@@ -1,4 +1,3 @@
-
 class node:
     
     def __init__(self, df, parent, splitting_criterion):
@@ -15,7 +14,8 @@ class node:
 
     def find_splitting_criterion( self ):
         
-        for attribute in list(self.df):
+        # consider for all attributes except label
+        for attribute in list(self.df)[:-1]:
             splits = get_possible_splits( self.df, attribute )
 
             for split in splits:

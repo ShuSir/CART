@@ -8,11 +8,9 @@ def read_csv( filename ):
     
     # shuffle dataframe
     df = sklearn.utils.shuffle( df )
+    df['defects'] = df['defects'].astype(int)
 
-    # extract features and labels 
-    features = df.loc[:,'loc' : 'branchCount']
-    labels = df['defects'].map({True : 1, False:0})
+    return df
 
-    return features, labels
+read_csv("./data/pc1.csv")
 
-read_csv('./data/pc1.csv')

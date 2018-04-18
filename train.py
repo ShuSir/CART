@@ -7,6 +7,9 @@ import utils
 
 FILENAME = './data/pc1.csv'
 
-features, labels = input.read_csv( FILENAME )
+df = input.read_csv( FILENAME )
 
-utils.get_possible_splits( features, 'loc' )
+splits = utils.get_possible_splits( df , 'loc' )
+print splits
+utils.evaluate_split( df, 'loc' , splits[5] )
+utils.gini_impurity(df)
