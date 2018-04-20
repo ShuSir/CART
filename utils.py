@@ -42,7 +42,6 @@ def evaluate_split( df, attribute, split ):
         gini_value : the gini index for split 
     """
     mask = df[attribute] <= split
-    split
     
     # split the dataset on the split attribute
     dfl = df[mask]
@@ -58,7 +57,7 @@ def evaluate_split( df, attribute, split ):
     
     # calculate weighted gini for this split 
     weighted_gini = weighting_factor_left*gini_left + weighting_factor_right*gini_right
-    print weighted_gini
+    return weighted_gini
 
 def gini_impurity( df ):
     

@@ -2,14 +2,12 @@ import pandas as pd
 import numpy as np
 
 import input
-import node 
-import utils
+from tree import tree
 
 FILENAME = './data/pc1.csv'
+stopping_sz = 20
 
 df = input.read_csv( FILENAME )
+decision_tree_classifier = tree( df, stopping_sz )
 
-splits = utils.get_possible_splits( df , 'loc' )
-print splits
-utils.evaluate_split( df, 'loc' , splits[5] )
-utils.gini_impurity(df)
+decision_tree_classifier.fit()
