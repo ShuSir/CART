@@ -47,16 +47,18 @@ def evaluate_split( df, attribute, split ):
     dfl = df[mask]
     dfr = df[~mask]
    
+    
     # calculate weighting factors for child
     weighting_factor_left = float(dfl.shape[0])/df.shape[0]
     weighting_factor_right = float(dfr.shape[0])/df.shape[0]
 
     # calculate gini for left and right
+    gini_parent = gini_impurity(df)
     gini_left = gini_impurity(dfl)
     gini_right = gini_impurity(dfr)
     
     # calculate weighted gini for this split 
-    weighted_gini = weighting_factor_left*gini_left + weighting_factor_right*gini_right
+    weighted_gini = gini_parent - (weighting_factor_left*gini_left + weighting_factor_right*gini_right)
     return weighted_gini
 
 def gini_impurity( df ):
@@ -66,5 +68,5 @@ def gini_impurity( df ):
     negative = 1.0 - positive
     
     gini_idx = (positive*positive) + (negative*negative)
-
+    gini_idx = 1 - gini_idx
     return gini_idx

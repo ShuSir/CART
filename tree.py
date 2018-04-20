@@ -15,6 +15,10 @@ class tree:
             return
 
         max_score, best_attribute, threshold = root.find_splitting_criterion()
+
+        if best_attribute == None:
+            return 
+
         print "Splitting dataset on attribute {}, with threshold {}".format(best_attribute, threshold)
 
         root.set_splitting_criteria( best_attribute, threshold )

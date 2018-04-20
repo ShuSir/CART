@@ -27,7 +27,7 @@ class node:
 
     def find_splitting_criterion( self ):
         
-        max_score = float("-inf")
+        min_score = 2.0
 
         best_attribute = None
         threshold = 0.0
@@ -38,12 +38,12 @@ class node:
             
             for split in splits:
                 split_score = utils.evaluate_split( self.df, attribute, split )
-                if split_score > max_score:
-                    split_score = max_score
+                if split_score < min_score:
+                    split_score = min_score
                     best_attribute = attribute
                     threshold = split
         
-        return max_score, best_attribute, threshold
+        return min_score, best_attribute, threshold
         
     def split( self, attribute, threshold ):
         mask = self.df[attribute] <= threshold
@@ -51,6 +51,8 @@ class node:
         dfl = self.df[mask]
         dfr = self.df[~mask]
         
+        print "Splitting in {} and {}".format(dfl.shape[0], dfr.shape[0])
+
         left = node( dfl , self )
         right = node( dfr , self )
 
