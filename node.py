@@ -5,7 +5,10 @@ class node:
     def __init__(self, df, parent):
         self.parent = parent 
         self.df = df
-        
+            
+        # compute gini score 
+        self.gini = utils.gini_impurity(self.df)
+
         # tree nodes left and right 
         self.left = None
         self.right = None
@@ -20,14 +23,14 @@ class node:
     
 
     def is_leaf( self, stopping_sz ):
-        if len(self.df) <= stopping_sz:
+        if len(self.df) <= stopping_sz or self.gini == 0.0:
             return True
         else:
             return False
 
     def find_splitting_criterion( self ):
         
-        min_score = 2.0
+        max_score = -1
 
         best_attribute = None
         threshold = 0.0
@@ -35,15 +38,17 @@ class node:
         # consider for all attributes except label
         for attribute in list(self.df)[:-1]:
             splits = utils.get_possible_splits( self.df, attribute )
-            
+            # print "Considering attribute : ", attribute
+
             for split in splits:
                 split_score = utils.evaluate_split( self.df, attribute, split )
-                if split_score < min_score:
-                    split_score = min_score
+                # print "Split at : {} , split_score : {}".format(split, split_score)
+                if split_score > max_score:
+                    max_score = split_score
                     best_attribute = attribute
                     threshold = split
         
-        return min_score, best_attribute, threshold
+        return max_score, best_attribute, threshold
         
     def split( self, attribute, threshold ):
         mask = self.df[attribute] <= threshold

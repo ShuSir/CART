@@ -5,10 +5,11 @@ import input
 import utils
 from tree import tree
 
-FILENAME = './data/pc1.csv'
+FILENAME = './data/pc2.csv'
 stopping_sz = 20
 
 df = input.read_csv( FILENAME )
+# print df
 decision_tree_classifier = tree( df, stopping_sz )
 decision_tree_classifier.fit()
 

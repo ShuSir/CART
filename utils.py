@@ -64,7 +64,10 @@ def evaluate_split( df, attribute, split ):
 def gini_impurity( df ):
     
     # compute positive samples and negative samples
-    positive = float(len(df[df['defects'] == 1]))/df.shape[0]
+    if df.shape[0] == 0:
+        return 1
+
+    positive = float(len(df[df[5] == 1]))/df.shape[0]
     negative = 1.0 - positive
     
     gini_idx = (positive*positive) + (negative*negative)
