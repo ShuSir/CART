@@ -12,6 +12,7 @@ class tree:
     def __build_tree( self, root ):
         
         if root.is_leaf(self.stopping_sz):
+            root.set_as_leaf()
             return
 
         max_score, best_attribute, threshold = root.find_splitting_criterion()
@@ -31,9 +32,21 @@ class tree:
         self.__build_tree(root.right)
 
     def fit( self ):
-        
         if self.root == None:
             self.root = node( self.df, None )
             self.__build_tree(self.root)
+        
+
+    def predict ( self , sample ):
+
+        current = self.root
+        while ( not current.leaf ):
+            # check for split criterion
+            if sample.loc[current.splitting_attribute] <= current.threshold:
+                current = current.left
+            else:
+                current = current.right
 
 
+        # return the label at this point
+        return current.label

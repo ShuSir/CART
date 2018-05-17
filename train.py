@@ -6,20 +6,22 @@ import utils
 from tree import tree
 
 FILENAME = './data/pc1.csv'
-stopping_sz = 20
+stopping_sz = 200
 
 df = input.read_csv( FILENAME )
+
+# split into training and testing
+df_train = df.iloc[:1000 , :]
+df_test = df.iloc[1001: , :]
+
+print "Train shape : " , df_train.shape
+print "Test shape : " , df_test.shape
+
+
 decision_tree_classifier = tree( df, stopping_sz )
 decision_tree_classifier.fit()
 
-# mask = df["branchCount"] <= 207.0
-#
-# dfl = df[mask]
-# dfr = df[~mask]
-#
-# gini_left = utils.gini_impurity( dfl )
-# gini_right = utils.gini_impurity( dfr )
-#
-# print "gini left : {} , gini right : {}".format(gini_left, gini_right)
 
-# print len(dfl)
+for idx, sample in df_test.iterrows():
+    prediction = decision_tree_classifier.predict( sample )
+    print prediction

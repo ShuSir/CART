@@ -15,11 +15,15 @@ class node:
         # splitting criterion 
         self.splitting_attribute = None
         self.threshold = 0
+        
+        # set leaf parameters to None
+        self.leaf = False
+        self.label = None
+        self.confidence = None
 
     def set_splitting_criteria( self, attribute, threshold ):
         self.splitting_attribute = attribute
-        self.threshold = threshold
-    
+        self.threshold = threshold   
 
     def is_leaf( self, stopping_sz ):
         if len(self.df) <= stopping_sz or self.gini == 0.0:
@@ -27,6 +31,8 @@ class node:
         else:
             return False
 
+
+    # helper method to find best split criterion
     def find_splitting_criterion( self ):
         
         max_score = -1.0
@@ -47,6 +53,8 @@ class node:
         
         return max_score, best_attribute, threshold
         
+
+    # helper method to split at the node
     def split( self, attribute, threshold ):
         mask = self.df[attribute] <= threshold
 
@@ -54,8 +62,19 @@ class node:
         dfr = self.df[~mask]
         
         print "Splitting in {} and {}".format(dfl.shape[0], dfr.shape[0])
-
+        
         left = node( dfl , self )
         right = node( dfr , self )
 
         return left, right
+    
+
+    def set_as_leaf ( self ):
+        
+        # set leaf parameters
+        self.leaf = True
+        self.label = self.df['defects'].max()
+        self.confidence = float( len( self.df[self.df['defects'] == self.label]))/self.df.shape[0]
+        
+        pass
+
